@@ -1,0 +1,83 @@
+#include<stdio.h>
+#include<string.h>
+struct jobs_for_students
+{
+        int process_id;
+        int arrival_time;
+        int burst_time;
+        int completion_time;
+        int remaining_time;
+};
+struct jobs_for_faculty
+{
+        int process_id;
+        int arrival_time;
+        int burst_time;
+        int priority;
+        int completion_time;
+        int remaining_time;
+};
+void faculty_job_process()
+{
+        int n,process_id,arrival_time,burst_time,priority;
+        printf("\nEnter number of faculty queries...");
+        scanf("%d",&n);
+        struct jobs_for_faculty faculty_processes[n];
+        printf("\nplease enter details for all %d processes:",n);
+        for(int i=0;i<n;i++)
+        {
+                printf("\nPlease, enter process id number for process number %d:",i+1);
+                scanf("%d",&process_id);
+                printf("\nEnter the arrival time (only integer value will be accepted ranging from 01 to 120 (in minutes)):");
+                scanf("%d",&arrival_time);
+                printf("\n Enter the burst time for the process (only integers from 01 to 120 will be accepted (in minutes)):");
+                scanf("%d",&burst_time);
+                printf("\n Enter the priority of process (enter only integer value):");
+                scanf("%d",&priority);
+                faculty_processes[i].process_id=process_id;
+                faculty_processes[i].arrival_time=arrival_time;
+                faculty_processes[i].burst_time=burst_time;
+                faculty_processes[i].priority=priority;
+                faculty_processes[i].completion_time=0;
+                faculty_processes[i].remaining_time=burst_time;
+        }
+
+}
+
+void student_job_process()
+{
+        int n,process_id,arrival_time,burst_time;
+        printf("\n Enter number of student's processes:");
+        scanf("%d",&n);
+        struct jobs_for_students student_processes[n];
+        printf("\nPlease enter details for %d processes",n);
+        for(int i=0;i<n;i++)
+        {
+                printf("\n enter process id  for process number %d",i+1);
+                scanf("%d",&process_id);
+                printf("\nEnter arrival time (Integers only ranging from 01 to 120 :)");
+                scanf("%d",&arrival_time);
+                printf("\nEnter burst time:");
+                scanf("%d",&burst_time);
+                student_processes[i].process_id=process_id;
+                student_processes[i].arrival_time=arrival_time;
+                student_processes[i].burst_time=burst_time;
+                student_processes[i].completion_time=0;
+                student_processes[i].remaining_time=burst_time;
+        }
+
+}
+void sorting(struct jobs_for_faculty arr[])
+{
+
+}
+void round_robin()
+{
+
+}
+int main()
+{
+        printf("\n\t\twelcome...");
+        faculty_job_process();
+        student_job_process();
+}

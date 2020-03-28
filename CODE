@@ -1,83 +1,213 @@
+
 #include<stdio.h>
 #include<string.h>
+#include<stdbool.h>
 struct jobs_for_students
 {
-        int process_id;
-        int arrival_time;
-        int burst_time;
-        int completion_time;
-        int remaining_time;
+	int process_id;
+	int arrival_time;
+	int burst_time;
+	int exit_time;
+	int response_time;
+	int completed;
 };
+
+
 struct jobs_for_faculty
 {
-        int process_id;
-        int arrival_time;
-        int burst_time;
-        int priority;
-        int completion_time;
-        int remaining_time;
+	int process_id;
+	int arrival_time;
+	int burst_time;
+	int priority;
+	int exit_time;
+	int response_time;
+	int completed;
 };
-void faculty_job_process()
-{
-        int n,process_id,arrival_time,burst_time,priority;
-        printf("\nEnter number of faculty queries...");
-        scanf("%d",&n);
-        struct jobs_for_faculty faculty_processes[n];
-        printf("\nplease enter details for all %d processes:",n);
-        for(int i=0;i<n;i++)
-        {
-                printf("\nPlease, enter process id number for process number %d:",i+1);
-                scanf("%d",&process_id);
-                printf("\nEnter the arrival time (only integer value will be accepted ranging from 01 to 120 (in minutes)):");
-                scanf("%d",&arrival_time);
-                printf("\n Enter the burst time for the process (only integers from 01 to 120 will be accepted (in minutes)):");
-                scanf("%d",&burst_time);
-                printf("\n Enter the priority of process (enter only integer value):");
-                scanf("%d",&priority);
-                faculty_processes[i].process_id=process_id;
-                faculty_processes[i].arrival_time=arrival_time;
-                faculty_processes[i].burst_time=burst_time;
-                faculty_processes[i].priority=priority;
-                faculty_processes[i].completion_time=0;
-                faculty_processes[i].remaining_time=burst_time;
-        }
 
+
+void faculty_job_process(int n,struct jobs_for_faculty faculty_processes[])
+{
+	int process_id,arrival_time,burst_time,priority;
+	printf("\nplease enter details for all %d processes:",n);
+	for(int i=0;i<n;i++)
+	{
+		printf("\nPlease, enter process id number for process number %d:",i+1);
+		scanf("%d",&process_id);
+		printf("\nEnter the arrival time (only integer value will be accepted ranging from 01 to 120 (in minutes)):");
+		scanf("%d",&arrival_time);
+		printf("\n Enter the burst time for the process (only integers from 01 to 120 will be accepted (in minutes)):");
+		scanf("%d",&burst_time);
+		printf("\n Enter the priority of process (enter only integer value):");
+		scanf("%d",&priority);
+		faculty_processes[i].process_id=process_id;
+		faculty_processes[i].arrival_time=arrival_time;
+		faculty_processes[i].burst_time=burst_time;
+		faculty_processes[i].priority=priority;
+		faculty_processes[i].exit_time=0;
+		faculty_processes[i].completed=0;
+	}
+	
 }
+
 
 void student_job_process()
 {
-        int n,process_id,arrival_time,burst_time;
-        printf("\n Enter number of student's processes:");
-        scanf("%d",&n);
-        struct jobs_for_students student_processes[n];
-        printf("\nPlease enter details for %d processes",n);
-        for(int i=0;i<n;i++)
-        {
-                printf("\n enter process id  for process number %d",i+1);
-                scanf("%d",&process_id);
-                printf("\nEnter arrival time (Integers only ranging from 01 to 120 :)");
-                scanf("%d",&arrival_time);
-                printf("\nEnter burst time:");
-                scanf("%d",&burst_time);
-                student_processes[i].process_id=process_id;
-                student_processes[i].arrival_time=arrival_time;
-                student_processes[i].burst_time=burst_time;
-                student_processes[i].completion_time=0;
-                student_processes[i].remaining_time=burst_time;
-        }
+	int n,process_id,arrival_time,burst_time;
+	printf("\n Enter number of student's processes:");
+	scanf("%d",&n);
+	struct jobs_for_students student_processes[n];
+	printf("\nPlease enter details for %d processes",n);
+	for(int i=0;i<n;i++)
+	{
+		printf("\n enter process id  for process number %d",i+1);
+		scanf("%d",&process_id);
+		printf("\nEnter arrival time (Integers only ranging from 01 to 120 :)");
+		scanf("%d",&arrival_time);
+		printf("\nEnter burst time:");
+		scanf("%d",&burst_time);
+		student_processes[i].process_id=process_id;
+		student_processes[i].arrival_time=arrival_time;
+		student_processes[i].burst_time=burst_time;
+		student_processes[i].completion_time=0;
+		student_processes[i].remaining_time=burst_time;
+	}
 
 }
-void sorting(struct jobs_for_faculty arr[])
+
+
+
+void sorting_by_arrival(int n,struct jobs_for_faculty faculty_processes[])
+{
+	for(int i=0;i<n;i++)
+	{
+		for(int j=0;j<n-1;j++)
+		{
+			if(faculty_processes[j].arrival_time>faculty_processes[j+1].arrival_time)
+			{
+				struct jobs_for_faculty temp;
+				temp=faculty_processes[j];
+				faculty_processes[j]=faculty_processes[j+1];
+				faculty_processes[j+1]=temp;
+			}
+			else if(faculty_processes[j].arrival_time==faculty_processes[j+1].arrival_time)
+			{
+				if(faculty_processes[j].priority>faculty_processes[j+1].priority)
+				{
+					struct jobs_for_faculty temp;
+					temp=faculty_processes[j];
+					faculty_processes[j]=faculty_processes[j+1];
+					faculty_processes[j+1]=temp;
+				}
+			}
+		}
+	}	
+}
+void sorting_by_exit(int n,struct jobs_for_faculty faculty_processes[])
+{
+	for(int i=0;i<n;i++)
+	{
+		for(int j=0;j<n-1;j++)
+			{
+				if(faculty_processes[j].exit_time>faculty_processes[j+1].exit_time)
+				{	
+					struct jobs_for_faculty temp;
+					temp=faculty_processes[j];
+					faculty_processes[j]=faculty_processes[j+1];
+					faculty_processes[j+1]=temp;
+				}
+			}
+	}
+}
+
+void print(int n,struct jobs_for_faculty faculty_processes[])
+{
+printf("\n\tprocess_id     arrival_time       burst_time       priority        exit_Time       waiting_time\n");
+for(int i=0;i<n;i++)
+{
+	printf("\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n ",faculty_processes[i].process_id,faculty_processes[i].arrival_time,faculty_processes[i].burst_time,faculty_processes[i].priority,faculty_processes[i].exit_time,(faculty_processes[i].exit_time-faculty_processes[i].burst_time-faculty_processes[i].arrival_time));
+}
+printf("\n");
+}
+
+
+void execute_faculty(int n,struct jobs_for_faculty faculty_processes[])
 {
 
+	int time=faculty_processes[0].arrival_time;
+	int loop_var=0;
+	int total_time=0;
+	for(int i=0;i<n;i++)
+	{
+		loop_var=loop_var+faculty_processes[i].burst_time;
+	}
+	printf("\n it is loop_var=%d",loop_var);
+	int next_process=0;
+	while(time<=120 && total_time!=loop_var)
+	{
+		if(faculty_processes[next_process].completed==0)
+		{
+		faculty_processes[next_process].response_time=time-faculty_processes[next_process].arrival_time;
+		total_time=total_time+faculty_processes[next_process].burst_time;
+		time=time+faculty_processes[next_process].burst_time;
+		faculty_processes[next_process].completed=1;
+		faculty_processes[next_process].exit_time=time;
+		}
+		int priority=100;
+		int any_process_found=0;
+		for(int i=0;i<n;i++)
+		{
+			if(faculty_processes[i].arrival_time<=time && faculty_processes[i].completed==0)
+			{
+				if(faculty_processes[i].priority<priority)
+				{
+					next_process=i;
+					priority=faculty_processes[i].priority;
+					any_process_found=1;
+				}
+			}
+		}
+		printf("\nit is priority %d",priority);
+		if(any_process_found==0)
+		{
+			time++;
+		}
+	}
 }
 void round_robin()
 {
-
+	
 }
+
 int main()
-{
-        printf("\n\t\twelcome...");
-        faculty_job_process();
-        student_job_process();
+{	
+	int choice;
+	printf("\n\t\t\twelcome...");
+	printf("\n\tPress 1 for faculty processes\n\t and press 2 for student processes");
+	scanf("%d",&choice);
+	switch(choice)
+	{
+	  case 1: {
+			printf("\nENTER NUMBER OF FACULTY PROCESSES");
+			int n;
+			scanf("%d",&n);
+			struct jobs_for_faculty faculty_processes[n];
+			faculty_job_process(n,faculty_processes);
+			printf("\nbefore sorting");
+			print(n,faculty_processes);
+			sorting_by_arrival(n,faculty_processes);
+			print(n,faculty_processes);
+			execute_faculty(n,faculty_processes);
+			sorting_by_exit_time(n,faculty_processes);
+			print(n,faculty_processes);
+			break;	
+		  }
+		
+	  case 2: 
+		{	
+			printf("\nENTER NUMBER OF STUDNET PROCESSES")_
+			student_job_process();break;
+		}
+	  default: 
+		printf("You Entered wrong key...Try Again..");main();
+	}
 }

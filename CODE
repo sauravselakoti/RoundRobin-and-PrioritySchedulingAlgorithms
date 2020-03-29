@@ -141,7 +141,7 @@ void execute_faculty(int n,struct jobs_for_faculty faculty_processes[])
 	{
 		loop_var=loop_var+faculty_processes[i].burst_time;
 	}
-	printf("\n it is loop_var=%d",loop_var);
+	//printf("\n it is loop_var=%d",loop_var);
 	int next_process=0;
 	while(time<=120 && total_time!=loop_var)
 	{	
@@ -166,7 +166,7 @@ void execute_faculty(int n,struct jobs_for_faculty faculty_processes[])
                                 }
                         }
                 }
-                printf("\nit is priority %d",priority);
+               // printf("\nit is priority %d",priority);
                 if(any_process_found==0)
                 {
                         time++;
@@ -323,10 +323,10 @@ int main()
 			scanf("%d",&n);
 			struct jobs_for_faculty faculty_processes[n];
 			faculty_job_process(n,faculty_processes);
-			printf("\nbefore sorting");
-			print(n,faculty_processes);
+			//printf("\nbefore sorting");
+			//print(n,faculty_processes);
 			sorting_by_arrival(n,faculty_processes);
-			print(n,faculty_processes);
+			//print(n,faculty_processes);
 			execute_faculty(n,faculty_processes);
 			sorting_by_exit_time(n,faculty_processes);
 			print(n,faculty_processes);
@@ -340,11 +340,11 @@ int main()
 			scanf("%d",&n);
 			struct jobs_for_students student_processes[n];
 			student_job_process(n,student_processes);
-			printf("\nbefore sorting...");
-			print_students(n,student_processes);
-			printf("\n After sorting on the basis of their arrival time...");
+//			printf("\nbefore sorting...");
+//			print_students(n,student_processes);
+//			printf("\n After sorting on the basis of their arrival time...");
 			sorting_students_by_arrival(n,student_processes);
-			print_students(n,student_processes);
+//			print_students(n,student_processes);
 			execute_students(n,student_processes);
 			sorting_students_by_exit_time(n,student_processes);
 			print_students(n,student_processes);
